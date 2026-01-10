@@ -1,0 +1,43 @@
+class Solution {
+public:
+    string s1, s2;
+    int dp[1001][1001];
+
+    int solve(int i, int j) {
+        
+        if (i == s1.size()) {
+            int sum = 0;
+            for (int k = j; k < s2.size(); k++)
+                sum += s2[k];
+            return sum;
+        }
+
+        if (j == s2.size()) {
+            int sum = 0;
+            for (int k = i; k < s1.size(); k++)
+                sum += s1[k];
+            return sum;
+        }
+
+       
+        if (dp[i][j] != -1)
+            return dp[i][j];
+
+              if (s1[i] == s2[j]) {
+            return dp[i][j] = solve(i + 1, j + 1);
+        }
+
+        
+        int deleteS1 = s1[i] + solve(i + 1, j);
+        int deleteS2 = s2[j] + solve(i, j + 1);
+
+        return dp[i][j] = min(deleteS1, deleteS2);
+    }
+
+    int minimumDeleteSum(string a, string b) {
+        s1 = a;
+        s2 = b;
+        memset(dp, -1, sizeof(dp));
+        return solve(0, 0);
+    }
+};
